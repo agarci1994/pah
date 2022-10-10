@@ -1,0 +1,30 @@
+{
+  "name": "pah-vk-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/server": "^11.10.0",
+    "@emotion/styled": "^11.10.4",
+    "@mui/material": "^5.10.8",
+    "@mui/x-data-grid": "^5.17.6",
+    "firebase": "^9.11.0",
+    "js-cookie": "^3.0.1",
+    "next": "12.3.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-firebaseui": "^6.0.0",
+    "react-hook-form": "^7.37.0",
+    "react-hot-toast": "^2.4.0"
+  },
+  "devDependencies": {
+    "eslint": "8.25.0",
+    "eslint-config-next": "12.3.1"
+  }
+}
