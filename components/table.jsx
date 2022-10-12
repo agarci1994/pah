@@ -1,19 +1,40 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import { getCollection } from "../utils/getCollections";
-import { headerFichas } from "../models/headers-model"
+import { headerFichas, headerDocumentos } from "../models/headers-model"
+import { Button } from "@mui/material";
+import { ModalForm } from "./modal";
 
-export default function DataTable() {
-
+export default function DataTable({type}) {
   const [data, setData] = useState([])
-  
+  const [header, setHeader] = useState([])
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   useEffect(() => {
-      async function fetchData() {
-        const a = await getCollection("fichas");
-        setData(a)
-      }
-      fetchData();
-  }, []);
+    switch (type) { 
+      case "fichas":
+        setHeader(headerFichas)
+        break;
+      case "documentos":
+        setHeader(headerDocumentos)
+        break;
+      default:
+        break;
+    }
+    async function fetchData() {
+      const data = await getCollection(type);
+      setData(data)
+    }
+    fetchData();
+    
+  }, [type]);
 
 
   return (
@@ -21,16 +42,21 @@ export default function DataTable() {
       style={{
         padding: "20px",
         "background-color": "white",
-        padding: "20px",
         width: "80%",
       }}
     >
-      <DataGrid
-        rows={data}
-        columns={headerFichas}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
-      />
+      <ModalForm open={open} handleClose={handleClose} />
+      <div>
+        <Button onClick={() => handleOpen()}>Crear</Button>
+      </div>
+      <div style={{ height: "90%" }}>
+        <DataGrid
+          rows={data}
+          columns={header}
+          pageSize={5}
+          rowsPerPageOptions={[5]}
+        />
+      </div>
     </div>
   );
 }
