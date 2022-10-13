@@ -6,6 +6,7 @@ export default function Home() {
     <div className={styles.container}>
       <style js>{`
         body {
+          background-color: rgb(100, 174, 114);
           margin: 0;
         }
       `}</style>

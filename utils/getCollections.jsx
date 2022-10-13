@@ -2,7 +2,6 @@ import { db } from "../config/firebase";
 import { doc, collection, getDocs, setDoc } from "firebase/firestore";
 
 export const getCollection = async (collectionName) => {
-  console.log("aaaa")
   const dbInstance = collection(db, collectionName);
 
   const res = await getDocs(dbInstance);
@@ -12,9 +11,9 @@ export const getCollection = async (collectionName) => {
 };
 
 export const createCollection = async (collectionName, value) => {
-  const dbInstance = doc(collection(db, collectionName))
-  console.log(collectionName)
-  console.log(value)
+  const dbInstance = value.id
+    ? doc(db, collectionName, value.id)
+    : doc(collection(db, collectionName))
   try {
     await setDoc(dbInstance, value, { merge: true });
     return true

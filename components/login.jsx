@@ -19,10 +19,8 @@ export const Login = () => {
   const onSubmit = async (data) => {
     try {
       await logIn(data.email, data.password);
-      console.log(data)
       router.push("/main");
     } catch (error) {
-      console.log(error)
       setError(true)
     }
   };

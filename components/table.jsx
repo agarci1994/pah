@@ -1,16 +1,18 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import { getCollection } from "../utils/getCollections";
-import { headerFichas, headerDocumentos } from "../models/headers-model"
+import { headerFichas, headerDocumentos } from "../models/headers-model";
 import { Button } from "@mui/material";
 import { ModalForm } from "./modal";
 
-export default function DataTable({type}) {
-  const [data, setData] = useState([])
-  const [header, setHeader] = useState([])
+export default function DataTable({ type }) {
+  const [data, setData] = useState([]);
+  const [header, setHeader] = useState([]);
   const [open, setOpen] = useState(false);
+  const [value, setValue] = useState({});
 
-  const handleOpen = () => {
+  const handleOpen = (value) => {
+    setValue(value)
     setOpen(true);
   };
   const handleClose = () => {
@@ -18,36 +20,36 @@ export default function DataTable({type}) {
   };
 
   useEffect(() => {
-    switch (type) { 
+    switch (type) {
       case "fichas":
-        setHeader(headerFichas)
+        setHeader(headerFichas(open, handleClose, handleOpen));
         break;
       case "documentos":
-        setHeader(headerDocumentos)
+        setHeader(headerDocumentos);
         break;
       default:
         break;
     }
     async function fetchData() {
       const data = await getCollection(type);
-      setData(data)
+      setData(data);
     }
     fetchData();
-    
   }, [type]);
-
 
   return (
     <div
       style={{
         padding: "20px",
         "background-color": "white",
-        width: "80%",
+        width: "100%",
       }}
     >
-      <ModalForm open={open} handleClose={handleClose} />
-      <div>
-        <Button onClick={() => handleOpen()}>Crear</Button>
+      <ModalForm open={open} handleClose={handleClose} value={value} />
+      <div style={{ textAlignLast: "right", marginBottom: "10px"}}>
+        <Button size="small" variant="outlined" color="success" onClick={() => handleOpen()}>
+          Crear
+        </Button>
       </div>
       <div style={{ height: "90%" }}>
         <DataGrid

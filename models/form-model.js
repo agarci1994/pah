@@ -41,8 +41,8 @@ export const fichas = [
     style: { width: "97%", margin: "10px" },
     select: true,
     option: [
-      { value: "little", label: "Pequeño propietario" },
-      { value: "big", label: "Gran tenedor" },
+      { value: "pequeño", label: "Pequeño propietario" },
+      { value: "grande", label: "Gran tenedor" },
     ],
   },
   {

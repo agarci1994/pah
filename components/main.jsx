@@ -1,4 +1,4 @@
-import { Nav } from "./nav";
+import { ResponsiveDrawer } from "./nav";
 import DataTable from "./table";
 import { useAuth } from "../context/AuthContext";
 import { ModalForm } from "./modal";
@@ -24,20 +24,7 @@ export const Main = () => {
 
   return (
     <div style={{ display: "flex", width: "100%", height: "100%" }}>
-      <div
-        style={{
-          width: "20%",
-          "background-color": "rgb(100, 174, 114)",
-        }}
-      >
-        <div>
-          <h1 style={{ padding: "20px" }}>PAH VK Admin</h1>
-        </div>
-        <Nav set={setType} />
-        <button onClick={handleLogout} style={{ margin: "10px" }}>
-          Logout
-        </button>
-      </div>
+      <ResponsiveDrawer setType={setType} handleLogout={handleLogout} />
       <DataTable type={type} />
     </div>
   );

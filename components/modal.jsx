@@ -1,31 +1,39 @@
 import { Button, MenuItem, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createCollection } from "../utils/getCollections";
 import { fichas } from "../models/form-model";
 
-export const ModalForm = ({ open, handleClose }) => {
+export const ModalForm = ({ open, handleClose, value }) => {
   const [obj, setObj] = useState({});
+
+  useEffect(() => {
+    if (value) {
+      setObj(value)
+    }
+  }, [value, window.innerWidth])
 
   const handleSubmit = async () => {
     await createCollection("fichas", obj);
-    setObj({});
-    handleClose();
+    setObj(value||{})
+    handleClose()
   };
 
   return (
     <Modal
       open={open}
-      onClose={open}
+      onClose={handleClose}
       aria-labelledby="parent-modal-title"
       aria-describedby="parent-modal-description"
     >
       <Box
         sx={{
-          width: "70%",
+          width: "90%",
           backgroundColor: "white",
-          height: "80%",
-          position: "absolute",
+          position:'absolute',
+          overflow:'scroll',
+          height:'90%',
+          display:'block',
           top: "50%",
           left: "50%",
           transform: "translate(-50%, -50%)",
@@ -59,11 +67,17 @@ export const ModalForm = ({ open, handleClose }) => {
         </div>
         <div>
           {fichas.map((prop, i) => {
+            console.log(window.innerWidth);
             return prop.option ? (
               <TextField
                 key={i}
                 {...prop}
-                value={obj[prop.value]}
+                style={
+                  window.innerWidth > 986
+                    ? prop.style
+                    : { width: "100%", margin: "10px" }
+                }
+                value={obj[prop.value] || ""}
                 onChange={({ target: { value } }) =>
                   setObj({ ...obj, [prop.value]: value })
                 }
@@ -80,6 +94,11 @@ export const ModalForm = ({ open, handleClose }) => {
               <TextField
                 key={i}
                 {...prop}
+                style={
+                  window.innerWidth > 980
+                    ? prop.style
+                    : { width: "100%", margin: "10px" }
+                }
                 value={obj[prop.value]}
                 onChange={({ target: { value } }) =>
                   setObj({ ...obj, [prop.value]: value })
@@ -87,12 +106,33 @@ export const ModalForm = ({ open, handleClose }) => {
               />
             );
           })}
-          {fichas
-            .filter(({ required }) => required)
-            .filter(({ value }) => obj[value]).length ===
-            fichas.filter(({ required }) => required).length && (
-            <Button onClick={() => handleSubmit()}>Crear</Button>
-          )}
+          <div style={{ textAlignLast: "right", margin: "34px" }}>
+            {fichas
+              .filter(({ required }) => required)
+              .filter(({ value }) => obj[value]).length ===
+              fichas.filter(({ required }) => required).length &&
+              !value && (
+                <Button
+                  size="large"
+                  variant="contained"
+                  color="success"
+                  
+                  onClick={() => handleSubmit()}
+                >
+                  Crear
+                </Button>
+              )}
+            {value && (
+              <Button
+                size="large"
+                variant="contained"
+                color="success"
+                onClick={() => handleSubmit()}
+              >
+                Editar
+              </Button>
+            )}
+          </div>
         </div>
       </Box>
     </Modal>
