@@ -41,13 +41,23 @@ export default function DataTable({ type }) {
     <div
       style={{
         padding: "20px",
-        "background-color": "white",
+        background: "linear-gradient(180deg, rgba(255,255,255,1) 20%, rgba(235,235,235,1) 75%, rgba(173,231,187,1) 150%)",
         width: "100%",
       }}
     >
-      <ModalForm open={open} handleClose={handleClose} value={value} />
-      <div style={{ textAlignLast: "right", marginBottom: "10px"}}>
-        <Button size="small" variant="outlined" color="success" onClick={() => handleOpen()}>
+      <ModalForm
+        open={open}
+        handleClose={handleClose}
+        value={value}
+        type={type}
+      />
+      <div style={{ textAlignLast: "right", marginBottom: "10px" }}>
+        <Button
+          size="small"
+          variant="outlined"
+          color="success"
+          onClick={() => handleOpen()}
+        >
           Crear
         </Button>
       </div>

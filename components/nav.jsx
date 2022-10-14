@@ -3,17 +3,17 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
+import ContactPageIcon from "@mui/icons-material/ContactPage";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import MailIcon from "@mui/icons-material/Mail";
+import AssignmentReturnedIcon from "@mui/icons-material/AssignmentReturned";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import { useState } from "react";
-import { Button, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 
 const drawerWidth = 240;
 
@@ -28,15 +28,26 @@ export const ResponsiveDrawer = (props) => {
   const drawer = (
     <div>
       <Toolbar />
-      <h2 style={{marginLeft: "19px"}}>PAH VALLEKAS</h2>
+      <h2 style={{ marginLeft: "19px" }}>PAH VALLEKAS</h2>
       <Divider />
       <List>
-        {[{name: "Fichas", collection: "fichas"}, {name: "Documentos utiles", collection: "documentos"}].map((text, index) => (
+        {[
+          { name: "Fichas", collection: "fichas" },
+          { name: "Documentos utiles", collection: "documentos" },
+        ].map((text, index) => (
           <>
-            <ListItem key={text} disablePadding onClick={() => props.setType(text.collection)}>
+            <ListItem
+              key={text}
+              disablePadding
+              onClick={() => props.setType(text.collection)}
+            >
               <ListItemButton>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {index % 2 === 0 ? (
+                    <ContactPageIcon />
+                  ) : (
+                    <AssignmentReturnedIcon />
+                  )}
                 </ListItemIcon>
                 <ListItemText primary={text.name} />
               </ListItemButton>
@@ -91,6 +102,14 @@ export const ResponsiveDrawer = (props) => {
           }}
         >
           {drawer}
+          <Button
+            variant="contained"
+            color="error"
+            style={{ margin: "10px 40px", top: "90%", position: "sticky" }}
+            onClick={() => props.handleLogout()}
+          >
+            Salir
+          </Button>
         </Drawer>
         <Drawer
           variant="permanent"
@@ -98,7 +117,7 @@ export const ResponsiveDrawer = (props) => {
             display: { xs: "none", sm: "block" },
             "& .MuiDrawer-paper": {
               boxSizing: "border-box",
-              backgroundColor: "rgb(100, 174, 114)",
+              backgroundImage: "linear-gradient( 117deg,  rgb(100, 174, 114) 39.2%, rgba(255,255,255,1) 156.2% )",
               width: drawerWidth,
             },
           }}
@@ -108,7 +127,7 @@ export const ResponsiveDrawer = (props) => {
           <Button
             variant="contained"
             color="error"
-            style={{ margin: "10px 40px" }}
+            style={{ margin: "10px 40px", top: "90%", position: "sticky" }}
             onClick={() => props.handleLogout()}
           >
             Salir

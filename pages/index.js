@@ -6,8 +6,8 @@ export default function Home() {
     <div className={styles.container}>
       <style js>{`
         body {
-          background-color: rgb(100, 174, 114);
-          margin: 0;
+        background-image: linear-gradient( 117deg,  rgb(100, 174, 114) 39.2%, rgba(255,255,255,1) 156.2% );          
+        margin: 0;
         }
       `}</style>
       <Login />

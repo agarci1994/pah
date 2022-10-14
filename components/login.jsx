@@ -72,7 +72,7 @@ export const Login = () => {
             <Button
               variant="contained"
               color="success"
-              style={{ margin: "10px 40px" }}
+              style={{ margin: "20px 40px" }}
               type="submit"
             >
               Iniciar

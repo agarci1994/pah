@@ -58,3 +58,25 @@ export const fichas = [
     multiline: true,
   },
 ];
+
+export const documentos = [
+  {
+    label: "Nombre",
+    value: "name",
+    style: { width: "97%", margin: "10px" },
+    required: true,
+  },
+  {
+    label: "Archivo",
+    value: "file",
+    style: { width: "97%", margin: "10px" },
+    required: true,
+  },
+  {
+    label: "Descripcion",
+    value: "description",
+    style: { margin: "10px", width: "97%" },
+    rows: 5,
+    multiline: true,
+  },
+];
