@@ -39,7 +39,10 @@ export const ResponsiveDrawer = (props) => {
             <ListItem
               key={text}
               disablePadding
-              onClick={() => props.setType(text.collection)}
+              onClick={() => {
+                props.setType(text.collection)
+                props.setFiles(undefined)
+              }}
             >
               <ListItemButton>
                 <ListItemIcon>

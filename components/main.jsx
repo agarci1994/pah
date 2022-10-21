@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export const Main = () => {
   const { logOut } = useAuth();
   const [type, setType] = useState("fichas")
-
+  const [files, setFiles] = useState(undefined);
 
   const handleLogout = async () => {
     const toastId = toast.loading("Logging out...");
@@ -24,8 +24,8 @@ export const Main = () => {
 
   return (
     <div style={{ display: "flex", width: "100%", height: "100%" }}>
-      <ResponsiveDrawer setType={setType} handleLogout={handleLogout} />
-      <DataTable type={type} />
+      <ResponsiveDrawer setType={setType} handleLogout={handleLogout} setFiles={setFiles} />
+      <DataTable type={type} setType={setType} files={files} setFiles={setFiles} />
     </div>
   );
 };

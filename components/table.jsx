@@ -1,15 +1,20 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
 import { getCollection } from "../utils/getCollections";
-import { headerFichas, headerDocumentos } from "../models/headers-model";
+import {
+  headerFichas,
+  headerDocumentos,
+  headerFiles,
+} from "../models/headers-model";
 import { Button } from "@mui/material";
 import { ModalForm } from "./modal";
 
-export default function DataTable({ type }) {
+export default function DataTable({ type, setType, files, setFiles }) {
   const [data, setData] = useState([]);
   const [header, setHeader] = useState([]);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({});
+  const [refresh, setRefresh] = useState(true);
 
   const handleOpen = (value) => {
     setValue(value)
@@ -20,9 +25,19 @@ export default function DataTable({ type }) {
   };
 
   useEffect(() => {
+    if (files) {
+      setHeader(headerFiles(open, handleClose, handleOpen, setFiles));
+      setType("archivo")
+    } else {
+      setHeader(headerFichas(open, handleClose, handleOpen, setFiles, setRefresh, refresh));
+      setType("fichas")
+    }
+  }, [files])
+
+  useEffect(() => {
     switch (type) {
       case "fichas":
-        setHeader(headerFichas(open, handleClose, handleOpen));
+        setHeader(headerFichas(open, handleClose, handleOpen, setFiles));
         break;
       case "documentos":
         setHeader(headerDocumentos);
@@ -35,7 +50,7 @@ export default function DataTable({ type }) {
       setData(data);
     }
     fetchData();
-  }, [type]);
+  }, [type, refresh]);
 
   return (
     <div
@@ -50,25 +65,28 @@ export default function DataTable({ type }) {
         handleClose={handleClose}
         value={value}
         type={type}
+        setRefresh={setRefresh}
+        refresh={refresh}
       />
       <div style={{ textAlignLast: "right", marginBottom: "10px" }}>
         <Button
           size="small"
           variant="outlined"
           color="success"
-          onClick={() => handleOpen()}
+          onClick={() => files ? handleOpen(files) : handleOpen()}
         >
           Crear
         </Button>
       </div>
       <div style={{ height: "90%" }}>
         <DataGrid
-          rows={data}
+          rows={files && files.files || data}
           columns={header}
-          pageSize={5}
-          rowsPerPageOptions={[5]}
+          pageSize={11}
+          rowsPerPageOptions={[11]}
         />
       </div>
+      {type === "archivo" && files && <Button onClick={() => setFiles(undefined)}>Atrás</Button>}
     </div>
   );
 }

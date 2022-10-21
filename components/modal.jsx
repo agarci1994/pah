@@ -2,14 +2,16 @@ import { Button, MenuItem, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { createCollection } from "../utils/getCollections";
-import { fichas, documentos } from "../models/form-model";
+import { uploadFile } from "../utils/storage"
+import { fichas, documentos, archivo } from "../models/form-model";
 
-export const ModalForm = ({ open, handleClose, value, type }) => {
+export const ModalForm = ({ open, handleClose, value, type, setRefresh, refresh }) => {
   const [obj, setObj] = useState({});
   const [form, setForm] = useState([])
+  const [error, setError] = useState(false)
 
   useEffect(() => {
-    if (value) {
+    if (value && type !== "archivo") {
       setObj(value)
     }
   }, [value])
@@ -17,20 +19,31 @@ export const ModalForm = ({ open, handleClose, value, type }) => {
   useEffect(() => {
     switch (type) {
       case "fichas":
-        setForm(fichas);
+        setForm(fichas)
         break;
       case "documentos":
-        setForm(documentos);
+        setForm(documentos)
+        break;
+      case "archivo":
+        setForm(archivo)
         break;
       default:
-        break;
+      break;
     }
+
   }, [type]);
 
   const handleSubmit = async () => {
-    await createCollection("fichas", obj);
-    setObj(value||{})
-    handleClose()
+    if (type !== "archivo") {
+      await createCollection("fichas", obj);
+      setObj(value || {})
+      setRefresh(!refresh)
+      handleClose()
+    } else {
+      await uploadFile("pah", value.id, obj, value)
+      setObj({})
+      handleClose();
+    }
   };
 
   return (
@@ -60,7 +73,8 @@ export const ModalForm = ({ open, handleClose, value, type }) => {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            backgroundImage: "linear-gradient( 200deg,  rgb(100, 174, 114) 2%, rgba(255,255,255,1) 126.2% )",
+            backgroundImage:
+              "linear-gradient( 200deg,  rgb(100, 174, 114) 2%, rgba(255,255,255,1) 126.2% )",
             "border-radius": "0.5em",
             padding: "10px",
           }}
@@ -79,9 +93,7 @@ export const ModalForm = ({ open, handleClose, value, type }) => {
               width="24"
             >
               <path d="M0 0h24v24H0z" fill="none" />
-              <path
-                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
-              />
+              <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
             </svg>
           </Button>
         </div>
@@ -125,12 +137,26 @@ export const ModalForm = ({ open, handleClose, value, type }) => {
               />
             );
           })}
+          {type === "archivo" && (
+            <div>
+              <TextField
+                type="file"
+                style={
+                  { width: "93%", margin: "10px" }
+                }
+                onChange={({ target: { files } }) =>
+                  setObj({ ...obj, file: files[0] })
+                }
+              />
+            </div>
+          )}
+          {error && <p>ERROR!!!</p>}
           <div style={{ textAlignLast: "right", margin: "34px" }}>
-            {form
+            {((form
               .filter(({ required }) => required)
               .filter(({ value }) => obj[value]).length ===
               form.filter(({ required }) => required).length &&
-              !value && (
+              !value) || (type === "archivo")) && (
                 <Button
                   size="large"
                   variant="contained"
@@ -140,7 +166,7 @@ export const ModalForm = ({ open, handleClose, value, type }) => {
                   Crear
                 </Button>
               )}
-            {value && (
+            {type !== "archivo" && value && (
               <Button
                 size="large"
                 variant="contained"

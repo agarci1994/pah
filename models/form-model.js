@@ -59,6 +59,21 @@ export const fichas = [
   },
 ];
 
+export const archivo = [
+  {
+    label: "Nombre",
+    value: "name",
+    style: { width: "47%", margin: "10px" },
+    required: true,
+  },
+  {
+    label: "Descripción",
+    value: "description",
+    style: { width: "48%", margin: "10px" },
+    required: true,
+  }
+];
+
 export const documentos = [
   {
     label: "Nombre",

@@ -1,8 +1,9 @@
 import { Button } from "@mui/material";
-import { useState } from "react";
 import { ModalForm } from "../components/modal";
+import FolderIcon from "@mui/icons-material/Folder";
+import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
-export const headerFichas = (open, handleClose, handleOpen) => {
+export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh, refresh) => {
   return [
     { field: "name", headerName: "Nombre", width: 150 },
     { field: "lastName", headerName: "Apellidos", width: 200 },
@@ -31,13 +32,18 @@ export const headerFichas = (open, handleClose, handleOpen) => {
       field: "ver",
       headerName: "Editar",
       sortable: false,
-      renderCell: ({row}) => {
+      renderCell: ({ row }) => {
         const onClick = () => {
           handleOpen(row);
         };
         return (
           <Button onClick={() => onClick()}>
-            <ModalForm open={open} handleClose={handleClose} />
+            <ModalForm
+              open={open}
+              handleClose={handleClose}
+              setRefresh={setRefresh}
+              refresh={refresh}
+            />
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="24"
@@ -51,8 +57,56 @@ export const headerFichas = (open, handleClose, handleOpen) => {
         );
       },
     },
+    {
+      field: "files",
+      headerName: "Archivos",
+      sortable: false,
+      renderCell: ({ row }) => {
+        const onClick = () => {
+          setFiles(row)
+        };
+        return (
+          <Button onClick={() => onClick()}>
+            <ModalForm open={open} handleClose={handleClose} />
+            <FolderIcon />
+          </Button>
+        );
+      },
+    },
   ];
 };
+
+export const headerFiles = (open, handleClose) => [
+  { field: "id", headerName: "ID", width: 250 },
+  {
+    field: "name",
+    headerName: "Nombre",
+    width: 200,
+  },
+  {
+    field: "description",
+    headerName: "Descripción",
+    width: 200,
+  },
+  {
+    field: "file",
+    headerName: "Ver",
+    sortable: false,
+    renderCell: ({ row }) => {
+      const onClick = () => {
+        let alink = document.createElement("a");
+        alink.href = row.file
+        alink.target = "_blank";
+        alink.click();
+      };
+      return (
+        <Button onClick={() => onClick()}>
+          <RemoveRedEyeIcon />
+        </Button>
+      );
+    },
+  },
+];
 
 export const headerDocumentos = [
   { field: "index", headerName: "ID", width: 250 },
