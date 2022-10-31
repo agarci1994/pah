@@ -11,8 +11,6 @@ export const getCollection = async (collectionName) => {
 };
 
 export const createCollection = async (collectionName, value) => {
-  console.log(collectionName)
-  console.log(value)
   const dbInstance = value.id
     ? doc(db, collectionName, value.id)
     : doc(collection(db, collectionName))

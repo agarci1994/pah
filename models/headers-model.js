@@ -2,9 +2,77 @@ import { Button } from "@mui/material";
 import { ModalForm } from "../components/modal";
 import FolderIcon from "@mui/icons-material/Folder";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { RawOff } from "@mui/icons-material";
 
 export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh, refresh) => {
   return [
+    {
+      field: "status",
+      headerName: "Estado",
+      sortable: false,
+      renderCell: ({ row }) => {
+        switch (row.status) {
+          case "ejecutado":
+          return (
+            <li
+              style={{
+                backgroundColor: "#d40d0dde",
+                borderColor: "#f40d0dde",
+                boxShadow: "0px 0px 4px 1px #d40d0dde",
+                listStyle: "none",
+              }}
+            >
+              Ejecutado
+            </li>
+          );
+          case "estancado":
+          return (
+            <li
+              style={{
+                backgroundColor: "#e6e000de",
+                borderColor: "#e9e000de",
+                boxShadow: "0px 0px 4px 1px #e6e000de",
+                listStyle: "none",
+              }}
+            >
+              Estancado
+            </li>
+          );
+          case "negociacion":
+          return (
+            <li
+              style={{
+                backgroundColor: "#1abddfde",
+                borderColor: "#5abddfde",
+                boxShadow: "0px 0px 4px 1px #1abddfde",
+                listStyle: "none",
+              }}
+            >
+              Negociación
+            </li>
+          );
+          case "firmado":
+          return (<li style={{backgroundColor: "#94E185",
+    borderColor: "#78D965",
+    boxShadow: "0px 0px 4px 1px #94E185", listStyle: "none"}}>Firmado</li>)
+          case "desconocido":
+          default:
+          return (
+            <li
+              style={{
+                backgroundColor: "#a5a5a5de",
+                borderColor: "#a9a9a9de",
+                boxShadow: "0px 0px 4px 1px #a9a9a9de",
+                listStyle: "none",
+              }}
+            >
+              Desconocido
+            </li>
+          );
+        }
+      },
+    },
     { field: "name", headerName: "Nombre", width: 150 },
     { field: "lastName", headerName: "Apellidos", width: 200 },
     { field: "address", headerName: "Dirección", width: 250 },
@@ -63,7 +131,7 @@ export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh
       sortable: false,
       renderCell: ({ row }) => {
         const onClick = () => {
-          setFiles(row)
+          setFiles(row);
         };
         return (
           <Button onClick={() => onClick()}>
@@ -76,7 +144,7 @@ export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh
   ];
 };
 
-export const headerFiles = (open, handleClose) => [
+export const headerFiles = (deleteFile) => [
   { field: "id", headerName: "ID", width: 250 },
   {
     field: "name",
@@ -95,13 +163,25 @@ export const headerFiles = (open, handleClose) => [
     renderCell: ({ row }) => {
       const onClick = () => {
         let alink = document.createElement("a");
-        alink.href = row.file
+        alink.href = row.file;
         alink.target = "_blank";
         alink.click();
       };
       return (
         <Button onClick={() => onClick()}>
           <RemoveRedEyeIcon />
+        </Button>
+      );
+    },
+  },
+  {
+    field: "delete",
+    headerName: "Borrar",
+    sortable: false,
+    renderCell: ({ row }) => {
+      return (
+        <Button onClick={() => deleteFile(row)}>
+          <DeleteIcon />
         </Button>
       );
     },

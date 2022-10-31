@@ -2,46 +2,57 @@ import { Button, MenuItem, Modal, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useEffect, useState } from "react";
 import { createCollection } from "../utils/getCollections";
-import { uploadFile } from "../utils/storage"
+import { uploadFile } from "../utils/storage";
 import { fichas, documentos, archivo } from "../models/form-model";
+import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import moment from "moment"
 
-export const ModalForm = ({ open, handleClose, value, type, setRefresh, refresh }) => {
+export const ModalForm = ({
+  open,
+  handleClose,
+  value,
+  type,
+  setRefresh,
+  refresh,
+}) => {
   const [obj, setObj] = useState({});
-  const [form, setForm] = useState([])
-  const [error, setError] = useState(false)
+  const [form, setForm] = useState([]);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     if (value && type !== "archivo") {
-      setObj(value)
+      setObj(value);
     }
-  }, [value])
+  }, [value]);
 
   useEffect(() => {
     switch (type) {
       case "fichas":
-        setForm(fichas)
+        setForm(fichas);
         break;
       case "documentos":
-        setForm(documentos)
+        setForm(documentos);
         break;
       case "archivo":
-        setForm(archivo)
+        setForm(archivo);
         break;
       default:
-      break;
+        break;
     }
-
   }, [type]);
 
   const handleSubmit = async () => {
     if (type !== "archivo") {
+      console.log(obj)
       await createCollection("fichas", obj);
-      setObj(value || {})
-      setRefresh(!refresh)
-      handleClose()
+      setObj(value || {});
+      setRefresh(!refresh);
+      handleClose();
     } else {
-      await uploadFile("pah", value.id, obj, value)
-      setObj({})
+      await uploadFile("pah", value.id, obj, value);
+      setObj({});
       handleClose();
     }
   };
@@ -121,6 +132,33 @@ export const ModalForm = ({ open, handleClose, value, type, setRefresh, refresh 
                   );
                 })}
               </TextField>
+            ) : prop.type === "data" ? (
+              <div
+                style={{
+                  margin: "10px",
+                  width: "30%",
+                  display: "-webkit-inline-box",
+                }}
+              >
+                <LocalizationProvider dateAdapter={AdapterMoment}>
+                  <MobileDatePicker
+                    key={i}
+                    {...prop}
+                    inputFormat="MM/DD/YYYY"
+                    value={moment(
+                      moment(obj[prop.value]).format("L"),
+                      "L"
+                    ).format("L")}
+                    onChange={(valueData) => {
+                      setObj({
+                        ...obj,
+                        [prop.value]: moment(valueData).format("L"),
+                      });
+                    }}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </LocalizationProvider>
+              </div>
             ) : (
               <TextField
                 key={i}
@@ -141,9 +179,7 @@ export const ModalForm = ({ open, handleClose, value, type, setRefresh, refresh 
             <div>
               <TextField
                 type="file"
-                style={
-                  { width: "93%", margin: "10px" }
-                }
+                style={{ width: "93%", margin: "10px" }}
                 onChange={({ target: { files } }) =>
                   setObj({ ...obj, file: files[0] })
                 }
@@ -152,11 +188,11 @@ export const ModalForm = ({ open, handleClose, value, type, setRefresh, refresh 
           )}
           {error && <p>ERROR!!!</p>}
           <div style={{ textAlignLast: "right", margin: "34px" }}>
-            {((form
+            {form
               .filter(({ required }) => required)
               .filter(({ value }) => obj[value]).length ===
               form.filter(({ required }) => required).length &&
-              !value) || (type === "archivo")) && (
+              (!value || type === "archivo") && (
                 <Button
                   size="large"
                   variant="contained"

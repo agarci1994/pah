@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
-import { getCollection } from "../utils/getCollections";
+import { getCollection, createCollection } from "../utils/getCollections";
 import {
   headerFichas,
   headerDocumentos,
@@ -24,9 +24,16 @@ export default function DataTable({ type, setType, files, setFiles }) {
     setOpen(false);
   };
 
+  const deleteFile = async (info) => {
+    const doc = {...value, files: value.files.filter(file => file.id !== info.id)}
+    await createCollection("fichas", doc)
+    setValue(doc)
+    setFiles(undefined)
+  }
+
   useEffect(() => {
     if (files) {
-      setHeader(headerFiles(open, handleClose, handleOpen, setFiles));
+      setHeader(headerFiles(deleteFile));
       setType("archivo")
     } else {
       setHeader(headerFichas(open, handleClose, handleOpen, setFiles, setRefresh, refresh));
@@ -46,7 +53,7 @@ export default function DataTable({ type, setType, files, setFiles }) {
         break;
     }
     async function fetchData() {
-      const data = await getCollection(type);
+      const data = await getCollection(type)
       setData(data);
     }
     fetchData();

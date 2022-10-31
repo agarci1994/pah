@@ -1,5 +1,26 @@
 export const fichas = [
   {
+    label: "Estado",
+    value: "status",
+    style: { width: "35%", margin: "10px" },
+    select: true,
+    option: [
+      { value: "ejecutado", label: "Ejecutado" },
+      { value: "estancado", label: "Estancado" },
+      { value: "negociacion", label: "Negociación" },
+      { value: "firmado", label: "Firmado con clausulas abusivas" },
+      { value: "desconocido", label: "Desconocido" },
+    ],
+    required: true,
+  },
+  {
+    label: "Fecha de entrada en la vivienda",
+    value: "init",
+    style: { width: "35%", margin: "10px" },
+    required: true,
+    type: "data",
+  },
+  {
     label: "Nombre",
     value: "name",
     style: { width: "35%", margin: "10px" },
@@ -56,6 +77,20 @@ export const fichas = [
     style: { margin: "10px", width: "97%" },
     rows: 5,
     multiline: true,
+  },
+  {
+    label: "Fecha del último lanzamiento",
+    value: "last",
+    style: { width: "35%", margin: "10px" },
+    required: true,
+    type: "data",
+  },
+  {
+    label: "Fecha del proximo lanzamiento",
+    value: "next",
+    style: { width: "35%", margin: "10px" },
+    required: true,
+    type: "data",
   },
 ];
 
