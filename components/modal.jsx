@@ -145,10 +145,10 @@ export const ModalForm = ({
                     key={i}
                     {...prop}
                     inputFormat="MM/DD/YYYY"
-                    value={moment(
+                    value={obj[prop.value] ? moment(
                       moment(obj[prop.value]).format("L"),
                       "L"
-                    ).format("L")}
+                    ).format("L") : null}
                     onChange={(valueData) => {
                       setObj({
                         ...obj,

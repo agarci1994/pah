@@ -17,7 +17,6 @@ export const fichas = [
     label: "Fecha de entrada en la vivienda",
     value: "init",
     style: { width: "35%", margin: "10px" },
-    required: true,
     type: "data",
   },
   {
@@ -82,14 +81,12 @@ export const fichas = [
     label: "Fecha del último lanzamiento",
     value: "last",
     style: { width: "35%", margin: "10px" },
-    required: true,
     type: "data",
   },
   {
     label: "Fecha del proximo lanzamiento",
     value: "next",
     style: { width: "35%", margin: "10px" },
-    required: true,
     type: "data",
   },
 ];
