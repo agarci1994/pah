@@ -5,7 +5,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import DeleteIcon from '@mui/icons-material/Delete';
 import { RawOff } from "@mui/icons-material";
 
-export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh, refresh) => {
+export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh, refresh, deleteDocument) => {
   return [
     {
       field: "status",
@@ -14,73 +14,82 @@ export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh
       renderCell: ({ row }) => {
         switch (row.status) {
           case "ejecutado":
-          return (
-            <li
-              style={{
-                backgroundColor: "#d40d0dde",
-                borderColor: "#f40d0dde",
-                boxShadow: "0px 0px 4px 1px #d40d0dde",
-                listStyle: "none",
-              }}
-            >
-              Ejecutado
-            </li>
-          );
+            return (
+              <li
+                style={{
+                  backgroundColor: "#d40d0dde",
+                  borderColor: "#f40d0dde",
+                  boxShadow: "0px 0px 4px 1px #d40d0dde",
+                  listStyle: "none",
+                }}
+              >
+                Ejecutado
+              </li>
+            );
           case "estancado":
-          return (
-            <li
-              style={{
-                backgroundColor: "#e6e000de",
-                borderColor: "#e9e000de",
-                boxShadow: "0px 0px 4px 1px #e6e000de",
-                listStyle: "none",
-              }}
-            >
-              Estancado
-            </li>
-          );
+            return (
+              <li
+                style={{
+                  backgroundColor: "#e6e000de",
+                  borderColor: "#e9e000de",
+                  boxShadow: "0px 0px 4px 1px #e6e000de",
+                  listStyle: "none",
+                }}
+              >
+                Estancado
+              </li>
+            );
           case "negociacion":
-          return (
-            <li
-              style={{
-                backgroundColor: "#1abddfde",
-                borderColor: "#5abddfde",
-                boxShadow: "0px 0px 4px 1px #1abddfde",
-                listStyle: "none",
-              }}
-            >
-              Negociación
-            </li>
-          );
+            return (
+              <li
+                style={{
+                  backgroundColor: "#1abddfde",
+                  borderColor: "#5abddfde",
+                  boxShadow: "0px 0px 4px 1px #1abddfde",
+                  listStyle: "none",
+                }}
+              >
+                Negociación
+              </li>
+            );
           case "firmado":
-          return (<li style={{backgroundColor: "#94E185",
-    borderColor: "#78D965",
-    boxShadow: "0px 0px 4px 1px #94E185", listStyle: "none"}}>Firmado</li>)
+            return (
+              <li
+                style={{
+                  backgroundColor: "#94E185",
+                  borderColor: "#78D965",
+                  boxShadow: "0px 0px 4px 1px #94E185",
+                  listStyle: "none",
+                }}
+              >
+                Firmado
+              </li>
+            );
           case "desconocido":
           default:
-          return (
-            <li
-              style={{
-                backgroundColor: "#a5a5a5de",
-                borderColor: "#a9a9a9de",
-                boxShadow: "0px 0px 4px 1px #a9a9a9de",
-                listStyle: "none",
-              }}
-            >
-              Desconocido
-            </li>
-          );
+            return (
+              <li
+                style={{
+                  backgroundColor: "#a5a5a5de",
+                  borderColor: "#a9a9a9de",
+                  boxShadow: "0px 0px 4px 1px #a9a9a9de",
+                  listStyle: "none",
+                }}
+              >
+                Desconocido
+              </li>
+            );
         }
       },
     },
     { field: "name", headerName: "Nombre", width: 150 },
     { field: "lastName", headerName: "Apellidos", width: 200 },
-    { field: "address", headerName: "Dirección", width: 250 },
-    {
-      field: "email",
-      headerName: "Email",
-      width: 200,
-    },
+    // { field: "address", headerName: "Dirección", width: 250 },
+    // {
+    //   field: "email",
+    //   headerName: "Email",
+    //   width: 200,
+    // },
     {
       field: "phone",
       headerName: "Telefono",
@@ -137,6 +146,18 @@ export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh
           <Button onClick={() => onClick()}>
             <ModalForm open={open} handleClose={handleClose} />
             <FolderIcon />
+          </Button>
+        );
+      },
+    },
+    {
+      field: "delete",
+      headerName: "Borrar",
+      sortable: false,
+      renderCell: ({ row }) => {
+        return (
+          <Button onClick={() => deleteDocument(row)}>
+            <DeleteIcon sx={{ color: "red" }} />
           </Button>
         );
       },

@@ -32,8 +32,7 @@ export const ResponsiveDrawer = (props) => {
       <Divider />
       <List>
         {[
-          { name: "Fichas", collection: "fichas" },
-          { name: "Documentos utiles", collection: "documentos" },
+          { name: "Fichas", collection: "fichas" }
         ].map((text, index) => (
           <>
             <ListItem

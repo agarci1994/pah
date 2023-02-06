@@ -1,5 +1,5 @@
 import { db } from "../config/firebase";
-import { doc, collection, getDocs, setDoc } from "firebase/firestore";
+import { doc, collection, getDocs, setDoc, deleteDoc } from "firebase/firestore";
 
 export const getCollection = async (collectionName) => {
   const dbInstance = collection(db, collectionName);
@@ -20,5 +20,16 @@ export const createCollection = async (collectionName, value) => {
   } catch (e) {
     console.log(e)
     return false
+  }
+};
+
+export const deleteCollection = async (collectionName, value) => {
+  const dbInstance = doc(db, collectionName, value.id)
+  try {
+    await deleteDoc(dbInstance, value, { merge: true });
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
   }
 };

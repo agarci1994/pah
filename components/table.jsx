@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { useState, useEffect } from "react";
-import { getCollection, createCollection } from "../utils/getCollections";
+import { getCollection, createCollection, deleteCollection } from "../utils/getCollections";
 import {
   headerFichas,
   headerDocumentos,
@@ -8,6 +8,7 @@ import {
 } from "../models/headers-model";
 import { Button } from "@mui/material";
 import { ModalForm } from "./modal";
+import swal from "sweetalert";
 
 export default function DataTable({ type, setType, files, setFiles }) {
   const [data, setData] = useState([]);
@@ -31,12 +32,44 @@ export default function DataTable({ type, setType, files, setFiles }) {
     setFiles(undefined)
   }
 
+  const deleteDocument = async (info) => {
+    swal({
+      title: "¿Estas seguro?",
+      text: "Asegurate bien antes de borrar, no podras recuperar la información",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(async (willDelete) => {
+      if (willDelete) {
+        await deleteCollection("fichas", info);
+        setValue(undefined);
+        setFiles(undefined);
+        setRefresh(!refresh)
+        swal("Eliminado!", {
+          icon: "success",
+        });
+      } else {
+        swal("¡Por los pelos!");
+      }
+    });
+  };
+
   useEffect(() => {
     if (files) {
       setHeader(headerFiles(deleteFile));
       setType("archivo")
     } else {
-      setHeader(headerFichas(open, handleClose, handleOpen, setFiles, setRefresh, refresh));
+      setHeader(
+        headerFichas(
+          open,
+          handleClose,
+          handleOpen,
+          setFiles,
+          setRefresh,
+          refresh,
+          deleteDocument
+        )
+      );
       setType("fichas")
     }
   }, [files])
@@ -44,7 +77,17 @@ export default function DataTable({ type, setType, files, setFiles }) {
   useEffect(() => {
     switch (type) {
       case "fichas":
-        setHeader(headerFichas(open, handleClose, handleOpen, setFiles));
+        setHeader(
+          headerFichas(
+            open,
+            handleClose,
+            handleOpen,
+            setFiles,
+            setRefresh,
+            refresh,
+            deleteDocument
+          )
+        );
         break;
       case "documentos":
         setHeader(headerDocumentos);
@@ -89,8 +132,8 @@ export default function DataTable({ type, setType, files, setFiles }) {
         <DataGrid
           rows={files && files.files || data}
           columns={header}
-          pageSize={11}
-          rowsPerPageOptions={[11]}
+          pageSize={10}
+          rowsPerPageOptions={[10]}
         />
       </div>
       {type === "archivo" && files && <Button onClick={() => setFiles(undefined)}>Atrás</Button>}

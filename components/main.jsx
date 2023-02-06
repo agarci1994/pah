@@ -1,10 +1,9 @@
 import { ResponsiveDrawer } from "./nav";
 import DataTable from "./table";
 import { useAuth } from "../context/AuthContext";
-import { ModalForm } from "./modal";
 import { LOGIN } from "../utils/routes.constant";
 import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export const Main = () => {
   const { logOut } = useAuth();
