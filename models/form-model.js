@@ -63,6 +63,7 @@ export const fichas = [
     option: [
       { value: "pequeño", label: "Pequeño propietario" },
       { value: "grande", label: "Gran tenedor" },
+      { value: "desconocido", label: "En investigación" },
     ],
   },
   {
@@ -73,6 +74,13 @@ export const fichas = [
   {
     label: "Descripcion",
     value: "description",
+    style: { margin: "10px", width: "97%" },
+    rows: 5,
+    multiline: true,
+  },
+  {
+    label: "Tablón de notas",
+    value: "extra",
     style: { margin: "10px", width: "97%" },
     rows: 5,
     multiline: true,
@@ -103,7 +111,7 @@ export const archivo = [
     value: "description",
     style: { width: "48%", margin: "10px" },
     required: true,
-  }
+  },
 ];
 
 export const documentos = [
