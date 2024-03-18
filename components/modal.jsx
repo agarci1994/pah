@@ -8,6 +8,7 @@ import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
+import TaskList from "./taskList";
 
 export const ModalForm = ({
   open,
@@ -193,6 +194,7 @@ export const ModalForm = ({
               />
             </div>
           )}
+          <TaskList task={obj.task} setObj={setObj} />
           {error && <p>ERROR!!!</p>}
           {value?.lastUpdate && (
             <p style={{ fontWeight: "bold", fontSize: 19, marginLeft: 10 }}>
