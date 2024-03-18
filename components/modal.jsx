@@ -5,9 +5,10 @@ import { createCollection } from "../utils/getCollections";
 import { uploadFile } from "../utils/storage";
 import { fichas, documentos, archivo } from "../models/form-model";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
-import { LocalizationProvider } from '@mui/x-date-pickers'
+import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import moment from "moment"
+import moment from "moment";
+import TaskList from "./taskList";
 
 export const ModalForm = ({
   open,
@@ -45,8 +46,11 @@ export const ModalForm = ({
 
   const handleSubmit = async () => {
     if (type !== "archivo") {
-      console.log(obj)
-      await createCollection("fichas", obj);
+      console.log(obj);
+      await createCollection("fichas", {
+        ...obj,
+        lastUpdate: new Date().toLocaleDateString("es-ES"),
+      });
       setObj(value || {});
       setRefresh(!refresh);
       handleClose();
@@ -145,10 +149,14 @@ export const ModalForm = ({
                     key={i}
                     {...prop}
                     inputFormat="MM/DD/YYYY"
-                    value={obj[prop.value] ? moment(
-                      moment(obj[prop.value]).format("L"),
-                      "L"
-                    ).format("L") : null}
+                    value={
+                      obj[prop.value]
+                        ? moment(
+                            moment(obj[prop.value]).format("L"),
+                            "L"
+                          ).format("L")
+                        : null
+                    }
                     onChange={(valueData) => {
                       setObj({
                         ...obj,
@@ -186,32 +194,30 @@ export const ModalForm = ({
               />
             </div>
           )}
+          <TaskList task={obj.task} setObj={setObj} />
           {error && <p>ERROR!!!</p>}
+          {value?.lastUpdate && (
+            <p style={{ fontWeight: "bold", fontSize: 19, marginLeft: 10 }}>
+              Ultima edición: {value.lastUpdate.toString()}{" "}
+            </p>
+          )}
           <div style={{ textAlignLast: "right", margin: "34px" }}>
-            {form
-              .filter(({ required }) => required)
-              .filter(({ value }) => obj[value]).length ===
-              form.filter(({ required }) => required).length &&
-              (!value || type === "archivo") && (
-                <Button
-                  size="large"
-                  variant="contained"
-                  color="success"
-                  onClick={() => handleSubmit()}
-                >
-                  Crear
-                </Button>
-              )}
-            {type !== "archivo" && value && (
-              <Button
-                size="large"
-                variant="contained"
-                color="success"
-                onClick={() => handleSubmit()}
-              >
-                Editar
-              </Button>
-            )}
+            <Button
+              disabled={
+                !(
+                  form
+                    .filter(({ required }) => required)
+                    .filter(({ value }) => obj[value]).length ===
+                  form.filter(({ required }) => required).length
+                )
+              }
+              size="large"
+              variant="contained"
+              color="success"
+              onClick={() => handleSubmit()}
+            >
+              {type !== "archivo" && value ? "Editar" : "Crear"}
+            </Button>
           </div>
         </div>
       </Box>

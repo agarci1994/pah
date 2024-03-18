@@ -2,10 +2,18 @@ import { Button } from "@mui/material";
 import { ModalForm } from "../components/modal";
 import FolderIcon from "@mui/icons-material/Folder";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 import { RawOff } from "@mui/icons-material";
 
-export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh, refresh, deleteDocument) => {
+export const headerFichas = (
+  open,
+  handleClose,
+  handleOpen,
+  setFiles,
+  setRefresh,
+  refresh,
+  deleteDocument
+) => {
   return [
     {
       field: "status",
@@ -103,6 +111,11 @@ export const headerFichas = (open, handleClose, handleOpen, setFiles, setRefresh
     {
       field: "type",
       headerName: "Tipo",
+      width: 100,
+    },
+    {
+      field: "lastUpdate",
+      headerName: "Ult. actualización",
       width: 100,
     },
     {
