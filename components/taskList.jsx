@@ -100,7 +100,9 @@ export default function TaskList({ task, setObj }) {
           onClick={() => {
             setObj((obj) => ({
               ...obj,
-              task: [...obj.task, { title, description }],
+              task: obj.task
+                ? [...obj.task, { title, description }]
+                : [{ title, description }],
             }));
             setTitle("");
             setDescription("");

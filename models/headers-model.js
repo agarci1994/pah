@@ -15,6 +15,7 @@ export const headerFichas = (
   deleteDocument
 ) => {
   return [
+    { field: "responsability", headerName: "Responsable", width: 100 },
     {
       field: "status",
       headerName: "Estado",
