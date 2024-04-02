@@ -20,6 +20,12 @@ export const fichas = [
     type: "data",
   },
   {
+    label: "Responsable",
+    value: "responsability",
+    style: { width: "25%", margin: "10px" },
+    required: false,
+  },
+  {
     label: "Nombre",
     value: "name",
     style: { width: "35%", margin: "10px" },
