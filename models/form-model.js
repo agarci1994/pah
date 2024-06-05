@@ -69,6 +69,7 @@ export const fichas = [
     option: [
       { value: "pequeño", label: "Pequeño propietario" },
       { value: "grande", label: "Gran tenedor" },
+      { value: "public", label: "Propiedad pública (EMV/IVIMA)" },
       { value: "desconocido", label: "En investigación" },
     ],
   },
